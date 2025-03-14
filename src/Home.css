@@ -1,0 +1,98 @@
+/* Estilos gerais */
+.home-container {
+    display: flex;
+    background-color: black;
+    height: 100vh;
+    color: white;
+  }
+  
+  /* Cabeçalho */
+  header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    background: #1f1f1f;
+    justify-content: space-between;
+  }
+  
+  header input {
+    flex-grow: 1;
+    margin: 0 10px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: white;
+    color: black;
+  }
+  
+  .add-contact {
+    background: #9b59b6;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: #1f1f1f;
+  }
+  
+  .sidebar button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  /* Lista de contatos */
+  main {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .contact-group {
+    margin-bottom: 20px;
+  }
+  
+  .group-header {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .contact-list {
+    padding: 10px;
+    border-radius: 15px;
+  }
+  
+  .contact-list.purple {
+    background: #9b59b6;
+  }
+  
+  .contact-list.green {
+    background: #2ecc71;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    margin: 5px 0;
+  }
+  
+  .contact-item .icon {
+    margin-right: 10px;
+  }
+  
