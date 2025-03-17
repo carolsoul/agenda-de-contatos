@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Home.css"; 
+import { useNavigate } from "react-router-dom";
+import "../Home.css"; 
 
 function Home() {
   const [contacts, setContacts] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.get("http://localhost:5000/contacts")
@@ -27,22 +29,25 @@ function Home() {
   return (
     <div className="home-container">
       <header>
-        <div className="logo">
-          <img src="/logo.svg" alt="Logo" />
-        </div>
+        <div className="logo"></div>
         <input 
           type="text" 
           placeholder="Pesquisar contatos" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
-        <button className="add-contact">+</button>
+         <button className="add-contact" onClick={() => navigate("/add-contact")}>+</button>
       </header>
 
       <div className="sidebar">
         <button onClick={() => setFilter("all")}>Todos</button>
         <button onClick={() => setFilter("recent")}>Recentes</button>
         <button onClick={() => setFilter("old")}>Antigos</button>
+      </div>
+
+      <div className="no-contacts">
+        <p>Nenhum contato encontrado!</p> 
+        <p>Clique no + para adicionar um novo contato.</p>
       </div>
 
       <main>
