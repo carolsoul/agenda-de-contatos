@@ -1,0 +1,19 @@
+Create database agenda;
+
+
+Create TABLE Contatos(
+	id INT auto_increment primary key,
+    nome VARCHAR(100) not NULL,
+    telefone VARCHAR(20) not NULL,
+    email VARCHAR(100) not NULL
+   );
+
+select * from Contatos;
+
+INSERT INTO Contatos (nome, telefone, email) 
+VALUES ('Ana', '123647589', 'ana@gmail.com');
+INSERT INTO Contatos (nome, telefone, email) 
+VALUES ('Carol', '123645549', 'carol@gmail.com');
+INSERT INTO Contatos (nome, telefone, email) 
+VALUES ('Bia', '123877229', 'bia@gmail.com');
+
