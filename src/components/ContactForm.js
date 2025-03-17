@@ -1,33 +1,50 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../ContactForm.css"
 
 function ContactForm() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
-  const [contact, setContact] = useState({ name: "", phone: "", email: "" });
 
-  const handleChange = (e) => {
-    setContact({ ...contact, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:5000/contacts", contact)
-      .then(() => {
-        setContact({ name: "", phone: "", email: "" });
-        navigate("/"); // Volta para a home
-      })
-      .catch(error => console.error("Erro ao adicionar contato:", error));
+    if (!name || !phone || !email) {
+      alert("Todos os campos são obrigatórios!");
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:5000/contacts", {
+        name,
+        phone,
+        email
+      });
+      navigate("/");
+    } catch (error) {
+      console.error("Erro ao adicionar contato:", error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" placeholder="Nome" value={contact.name} onChange={handleChange} required />
-      <input name="phone" placeholder="Telefone" value={contact.phone} onChange={handleChange} required />
-      <input name="email" placeholder="E-mail" value={contact.email} onChange={handleChange} required />
-      <button type="submit">Adicionar Contato</button>
-      <button type="button" onClick={() => navigate("/")}>Cancelar</button>
-    </form>
+    <div className="container">
+      <h2>Adicionar Contato</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="input-container">
+          <input type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)}/>
+
+          <input type="text" placeholder="Telefone" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+
+          <input type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        </div>
+        <div className="btn-container">
+        <button type="submit">Salvar</button>
+        <button type="button" onClick={() => navigate("./Home.js")}>Cancelar</button>
+        </div>
+      </form>
+    </div>
   );
 }
 
