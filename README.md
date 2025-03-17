@@ -1,6 +1,6 @@
 # 📒 Agenda de Contatos
 
-Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenvolvida com **React** e um backend em **Node.js**.
+Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenvolvida com **React**.
 
 ## 🚀 Funcionalidades
 - 📌 Adicionar, editar e remover contatos.
@@ -10,8 +10,6 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 
 ## 🛠️ Tecnologias Utilizadas
 - **Frontend:** React, CSS
-- **Backend:** Node.js, Express
-- **Banco de Dados:** JSON Server (para testes locais)
 
 ## 📂 Estrutura do Projeto
 ```
@@ -34,7 +32,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 ## 📌 Como Rodar o Projeto
 ### 1️⃣ Clonar o repositório
 ```sh
-git clone https://github.com/seu-usuario/agenda-contatos.git
+git clone https://github.com/carolsoul/agenda-contatos.git
 cd agenda-contatos
 ```
 ### 2️⃣ Instalar dependências
@@ -42,12 +40,6 @@ cd agenda-contatos
 yarn install
 # ou
 npm install
-```
-### 3️⃣ Rodar o servidor backend (JSON Server)
-```sh
-yarn json-server --watch db.json --port 5000
-# ou
-npx json-server --watch db.json --port 5000
 ```
 ### 4️⃣ Rodar o projeto React
 ```sh
@@ -67,8 +59,3 @@ Seguindo o padrão [Conventional Commits](https://www.conventionalcommits.org/en
 - **refactor:** Melhorias no código sem alterar funcionalidades.
 - **test:** Adição ou modificação de testes.
 - **chore:** Outras mudanças que não afetam o código-fonte.
-
-## 💡 Melhorias Futuras
-- 📱 Melhorar a interface mobile.
-- 📧 Adicionar campo de e-mail nos contatos.
-- 🔔 Notificações para eventos importantes.
