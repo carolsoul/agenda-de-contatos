@@ -6,7 +6,7 @@
 
 :root{
   --bg-white: #F8F8F8;
-  --bg-black: #2B2B2B
+  --bg-black: #2B2B2B;
   --purple: #B056FF;
   --profile-purple: #C380FF;
   --green: #00FF7F;
@@ -19,72 +19,60 @@
 
 .home-container{
   display: flex;
+  gap: 20px;
   flex-direction: column;
-  height: 100vh;
+  padding: 20px;
+  background-color: var(--bg-black);
   width: 100vw;
-  background-color: #2B2B2B;
+  height: 100vh;
 }
 
 header{
+  padding-top: 30px;
   display: flex;
-  align-items: center;
-  gap: 80px;
-  padding: 40px;
+  justify-content: space-between;
 }
 
-header input{
+.search-bar{
+  background-color: var(--bg-white);
+  color: var(--bg-black);
   border-radius: 50px;
+  padding: 10px 20px;
+  width: 100%;
   border: none;
   outline: none;
-  padding: 13px 25px;
-  background-color: var(--bg-white);
-  font-size: 15px;
-  color: var(--bg-black);
-  width: 80rem;
-  margin: 0 40px;
-}
-
-.logo{
-  width: 13rem;
-  height: 60px;
-  background-image: url(./assets/logo-orbita-green.svg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  display: flex;
+  justify-content: center;
 }
 
 .add-contact{
-  border: none;
   font-size: 40px;
-  background-color: transparent;
   color: var(--bg-white);
-  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  outline: none;
 }
 
 .sidebar{
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-right: 20px;
-  padding-left: 40px;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  padding: 10px 0;
 }
 
 .sidebar button{
   background-color: transparent;
-  border: 2px solid;
-  padding: 8px 10px;
-  border-radius: 20px;
-  width: 160px;
-  font-weight: 700;
+  border: 2px solid var(--bg-white);
   color: var(--bg-white);
-  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
 }
 
 .sidebar button:focus{
   background-color: var(--green);
-  color: #2B2B2B;
+  border: var(--green);
+  color: var(--bg-black);
 }
 
 .no-contacts{
