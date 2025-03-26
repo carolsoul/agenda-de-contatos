@@ -30,15 +30,12 @@ function Home() {
     <div className="home-container">
       <header>
         <div className="logo"></div>
-        <input 
-          type="text" 
-          placeholder="Pesquisar contatos" 
-          value={search} 
-          onChange={(e) => setSearch(e.target.value)} 
-        />
+
          <button className="add-contact" onClick={() => navigate("/add-contact")}>+</button>
       </header>
 
+      <input type="text" placeholder="Pesquisar contatos" value={search} onChange={(e) => setSearch(e.target.value)}className="search-bar"/>
+      
       <div className="sidebar">
         <button onClick={() => setFilter("all")}>Todos</button>
         <button onClick={() => setFilter("recent")}>Recentes</button>
