@@ -14,17 +14,28 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 ## 📂 Estrutura do Projeto
 ```
 📦 agenda-contatos
+├── 📂 node_modules
+├── 📂 public
 ├── 📂 src
+│   ├── 📂 assets
+│   │   ├── logo-orbita-green.svg
 │   ├── 📂 components
 │   │   ├── ContactForm.js
 │   │   ├── ContactList.js
 │   ├── 📂 pages
-│   │   ├── Home.js
 │   │   ├── AddContact.js
+│   │   ├── Home.js
+│   │   ├── Login.js
+│   │   ├── Sign.js
+│   ├── App.css
 │   ├── App.js
+│   ├── ContactForm.css
+│   ├── Home.css
+│   ├── index.css
 │   ├── index.js
+│   ├── Login.css
+│   ├── Sign.css
 │   ├── 📂 assets
-├── 📂 public
 ├── package.json
 ├── README.md
 ```
