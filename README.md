@@ -10,10 +10,15 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 
 ## 🛠️ Tecnologias Utilizadas
 - **Frontend:** React, CSS
+- **Backend:**
 
 ## 📂 Estrutura do Projeto
 ```
 📦 agenda-contatos
+├── 📂 backend
+│   ├── 📂 database
+│   ├── 📂 .env
+│   ├── 📂 server.js
 ├── 📂 node_modules
 ├── 📂 public
 ├── 📂 src
@@ -22,6 +27,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 │   ├── 📂 components
 │   │   ├── ContactForm.js
 │   │   ├── ContactList.js
+│   │   ├── PasswordRecovery.js
 │   ├── 📂 pages
 │   │   ├── AddContact.js
 │   │   ├── Home.js
@@ -34,6 +40,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 │   ├── index.css
 │   ├── index.js
 │   ├── Login.css
+│   ├── PasswordRecovery.css
 │   ├── Sign.css
 │   ├── 📂 assets
 ├── package.json
