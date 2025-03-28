@@ -51,10 +51,10 @@ function Login() {
 
           <div className="info">
             <p>
-              Não tem uma conta? <a onClick={() => navigate("/SignIn")}>Cadastre-se</a>
+              Não tem uma conta? <a onClick={() => navigate("/Register")}>Cadastre-se</a>
             </p>
             <p>
-              Esqueceu sua senha? <a>Recupere sua conta</a>
+              Esqueceu sua senha? <a onClick={() => navigate("/recuperar-senha")}>Recupere sua conta</a>
             </p>
             <br />
             <img src="logo-orbita-small" alt="logo-orbita" />
