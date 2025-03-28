@@ -82,3 +82,22 @@
     background-color: #2B2B2B;
     color: #F8F8F8;
 }
+
+p{
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+}
+
+.sign-info a{
+    font-weight: 600;
+    color: #F8F8F8;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sign-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
