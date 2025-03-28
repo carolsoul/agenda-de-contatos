@@ -42,7 +42,6 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 │   ├── Login.css
 │   ├── PasswordRecovery.css
 │   ├── Sign.css
-│   ├── 📂 assets
 ├── package.json
 ├── README.md
 ```
