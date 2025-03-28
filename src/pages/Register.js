@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaPhone, FaEnvelope, FaLock} from "react-icons/fa";
-import "../SignIn.css";
+import "../Register.css";
 
-function Cadastro() {
+function Register() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -53,12 +53,12 @@ function Cadastro() {
             <button type="submit" className="sign-btn">Criar conta</button>
         </form>
 
-          <div className="info">
+          <div className="sign-info">
             <p>
               Já tem uma conta? <a onClick={() => navigate("/")}>Faça login</a>
             </p>
             <p>
-              Esqueceu sua senha? <a>Recupere</a>
+              Esqueceu sua senha? <a onClick={() => navigate("components/PasswordRecovery")}>Recupere sua conta</a>
             </p>
             <br />
             <img src="logo-orbita-small" alt="logo-orbita" />
@@ -68,4 +68,4 @@ function Cadastro() {
   );
 }
 
-export default Cadastro;
+export default Register;
