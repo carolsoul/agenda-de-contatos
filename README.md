@@ -11,6 +11,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 ## 🛠️ Tecnologias Utilizadas
 - **Frontend:** React, CSS
 - **Backend:**
+- **Banco de Dados:** MySQL
 
 ## 📂 Estrutura do Projeto
 ```
@@ -32,7 +33,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 │   │   ├── AddContact.js
 │   │   ├── Home.js
 │   │   ├── Login.js
-│   │   ├── Sign.js
+│   │   ├── Register.js
 │   ├── App.css
 │   ├── App.js
 │   ├── ContactForm.css
@@ -41,7 +42,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 │   ├── index.js
 │   ├── Login.css
 │   ├── PasswordRecovery.css
-│   ├── Sign.css
+│   ├── Register.css
 ├── package.json
 ├── README.md
 ```
