@@ -10,7 +10,7 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 
 ## 🛠️ Tecnologias Utilizadas
 - **Frontend:** React, CSS
-- **Backend:**
+- **Backend:** Node.js, API REST
 - **Banco de Dados:** MySQL
 
 ## 📂 Estrutura do Projeto
