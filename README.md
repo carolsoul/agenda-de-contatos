@@ -1,12 +1,16 @@
 # 📒 Agenda de Contatos
 
-Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenvolvida com **React**.
+
+Aplicação web para cadastro e login de usuários, com foco em organização de contatos de forma prática, moderna e intuitiva desenvolvida com **React** e **Node.js**.
 
 ## 🚀 Funcionalidades
-- 📌 Adicionar, editar e remover contatos.
-- 🔍 Pesquisar contatos pelo nome.
-- 📂 Organizar contatos em ordem alfabética.
-- 🎨 Interface responsiva e moderna.
+- ✅ Cadastro de novo usuário com validações de e-mail e senha.
+- 🔐 Login com verificação de credenciais simulada.
+- 📂 Organizar contatos em ordem alfabética, filtros por data de criação e categoria.
+- ⚠️ Feedback visual de erros e sucessos.
+- 🧩 Ícones intuitivos nos campos de formulário.
+- 🚀 Navegação entre páginas com React Router.
+- 📱 Estilo limpo e responsivo
 
 ## 🛠️ Tecnologias Utilizadas
 - **Frontend:** React, CSS
@@ -17,34 +21,49 @@ Uma aplicação web para gerenciar contatos de forma simples e eficiente, desenv
 ```
 📦 agenda-contatos
 ├── 📂 backend
-│   ├── 📂 database
-│   ├── 📂 .env
-│   ├── 📂 server.js
-├── 📂 node_modules
-├── 📂 public
-├── 📂 src
-│   ├── 📂 assets
-│   │   ├── logo-orbita-green.svg
-│   ├── 📂 components
-│   │   ├── ContactForm.js
-│   │   ├── ContactList.js
-│   │   ├── PasswordRecovery.js
-│   ├── 📂 pages
-│   │   ├── AddContact.js
-│   │   ├── Home.js
-│   │   ├── Login.js
-│   │   ├── Register.js
-│   ├── App.css
-│   ├── App.js
-│   ├── ContactForm.css
-│   ├── Home.css
-│   ├── index.css
-│   ├── index.js
-│   ├── Login.css
-│   ├── PasswordRecovery.css
-│   ├── Register.css
-├── package.json
-├── README.md
+│   ├── 📂 node_modules
+│   ├── .env
+│   ├── .sql
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+├── 📂 frontend
+│   ├── 📂 node_modules
+│   ├── 📂 public
+│   ├── 📂 src
+│   │   ├── 📂 assets
+│   │   │   ├── img_password_1.png
+│   │   │   ├── img_password_2.png
+│   │   │   ├── img_password_3.png
+│   │   │   ├── logo-orbita-green.svg
+│   │   ├── 📂 components
+│   │   │   ├── ContactForm.js
+│   │   │   ├── ContactList.js
+│   │   │   ├── EmailVerification.js
+│   │   │   ├── NewPassword.js
+│   │   │   ├── PasswordRecovery.js
+│   │   ├── 📂 pages
+│   │   │   ├── AddContact.js
+│   │   │   ├── ContactDetails.js
+│   │   │   ├── Home.js
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   ├── App.css
+│   │   ├── App.js
+│   │   ├── ContactDetails.css
+│   │   ├── ContactForm.css
+│   │   ├── EmailVerification.css
+│   │   ├── Home.css
+│   │   ├── index.css
+│   │   ├── index.js
+│   │   ├── Login.css
+│   │   ├── NewPassword.css
+│   │   ├── PasswordRecovery.css
+│   │   ├── Register.css
+│   ├── .gitignore
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
 ```
 
 ## 📌 Como Rodar o Projeto
@@ -65,7 +84,7 @@ yarn start
 # ou
 npm start
 ```
-Acesse **http://localhost:3000** no navegador.
+Acesse **http://localhost:3001** no navegador.
 
 ## 📜 Padrões de Commit
 Seguindo o padrão [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
