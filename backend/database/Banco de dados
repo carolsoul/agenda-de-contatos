@@ -21,4 +21,11 @@ SET nome = 'Carolina', telefone = '987654321', email = 'carolina@exemplo.com' WH
 
 DELETE FROM Contatos WHERE id = 3;
 
+SELECT * FROM Contatos
+WHERE nome LIKE '%ana%';
 
+SELECT * FROM Contatos
+WHERE telefone LIKE '%123%';
+
+SELECT * FROM Contatos
+WHERE email LIKE '%email%';
