@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Hooks para capturar o ID da URL e navegar entre rotas
 import axios from "axios";
 import Modal from "react-modal"; // Modal para exibir mensagens e confirmações
-import { FaArrowLeft, FaStar, FaRegStar, FaEdit, FaTrash, FaPhone, FaEnvelope, FaMapMarkedAlt } from "react-icons/fa"; // Ícones
+import { FaArrowLeft, FaStar, FaRegStar, FaEdit, FaTrash, FaPhone, FaEnvelope, FaMapMarkedAlt, FaTag } from "react-icons/fa"; // Ícones
 import "../ContactDetails.css";
 
 // Define qual elemento será considerado o root do modal
@@ -113,7 +113,7 @@ function ContactDetails() {
         </div>
         
         <div className="contact-line-info">
-        <FaMapMarkedAlt className="contact-icon"/>
+        <FaTag className="contact-icon"/>
         <p>{contact.category}</p>
         </div>
 
