@@ -28,39 +28,45 @@ const PasswordRecovery = () => {
   };
 
   return (
-    <div className="password-recovery">
+    <main className="password-main">
+
+      <div className='password-title-container'>
       <h2 className='password-title'>Esqueceu sua senha?</h2>
       <p className='password-parag'>Não se preocupe, vamos te ajudar!</p>
-
-      <div className='password-img-1'>
-        <img src={ImgPassword1} alt="Descrição da imagem" />
       </div>
 
-      <p className='password-parag-2'>Por favor digite seu E-mail para receber o código de verificação.</p>
-
-      {/* Formulário para inserção do e-mail */}
-      <form onSubmit={handleSubmit}>
-        <div className="group">
-          {/* Ícone e campo de entrada */}
-          <FaEnvelope className="icon" />
-          <input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <div className='password-box'>
+        <div className='password-img-1'>
+          <img src={ImgPassword1} alt="Descrição da imagem" />
         </div>
 
-        {/* Exibe mensagem de feedback, se houver */}
-        {message && <p className={`email-message ${message.type}`}>{message.text}</p>}
+        {/* Formulário para inserção do e-mail */}
+        <form className='password-form' onSubmit={handleSubmit}>
 
-        <button type="submit" className='password-btn'>Próximo</button>
+          <p className='password-parag-2'>Por favor digite seu E-mail para receber o código de verificação.</p>
 
-        {/* Botão de cancelar (volta para a home) */}
-        <button className='cancel-btn' onClick={() => navigate("/")}>Cancelar</button>
-      </form>
-    </div>
+          <div className="group">
+            {/* Ícone e campo de entrada */}
+            <FaEnvelope className="icon" />
+            <input
+              type="email"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Exibe mensagem de feedback, se houver */}
+          {message && <p className={`email-message ${message.type}`}>{message.text}</p>}
+
+          <button type="submit" className='password-btn'>Próximo</button>
+
+          {/* Botão de cancelar (volta para a home) */}
+          <button className='cancel-btn' onClick={() => navigate("/")}>Cancelar</button>
+        </form>
+      </div>
+    </main>
   );
 };
 

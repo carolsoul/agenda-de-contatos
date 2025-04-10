@@ -96,54 +96,56 @@ function Home() {
         className="search-bar"
       />
 
-      {/* Botões de filtro */}
-      <div className="sidebar">
-        <button onClick={() => setFilter("all")}>Todos</button>
-        <button onClick={() => setFilter("recent")}>Recentes</button>
-        <button onClick={() => setFilter("old")}>Antigos</button>
-        <button onClick={() => setFilter("favorites")}>Favoritos</button>
-        <button onClick={() => setFilter("friends")}>Amigos</button>
-        <button onClick={() => setFilter("family")}>Família</button>
-        <button onClick={() => setFilter("work")}>Trabalho</button>
-      </div>
-
-      {/* Mensagem quando não há contatos filtrados */}
-      {filteredContacts.length === 0 && (
-        <div className="no-contacts">
-          <p>Nenhum contato encontrado!</p>
-          <p>Clique no + para adicionar um novo contato.</p>
+      <div className="sidebar-main-container">
+        {/* Botões de filtro */}
+        <div className="sidebar">
+          <button onClick={() => setFilter("all")}>Todos</button>
+          <button onClick={() => setFilter("recent")}>Recentes</button>
+          <button onClick={() => setFilter("old")}>Antigos</button>
+          <button onClick={() => setFilter("favorites")}>Favoritos</button>
+          <button onClick={() => setFilter("friends")}>Amigos</button>
+          <button onClick={() => setFilter("family")}>Família</button>
+          <button onClick={() => setFilter("work")}>Trabalho</button>
         </div>
-      )}
 
-      {/* Lista principal de contatos agrupados por letra */}
-      <main>
-        {Object.keys(groupedContacts).map((letter) => {
-          const colorClass = getColorForLetter(letter);
+        {/* Mensagem quando não há contatos filtrados */}
+        {filteredContacts.length === 0 && (
+          <div className="no-contacts">
+            <p>Nenhum contato encontrado!</p>
+            <p>Clique no + para adicionar um novo contato.</p>
+          </div>
+        )}
 
-          return (
-            <section key={letter} className={`contact-group ${colorClass}`}>
-              {/* Cabeçalho com a letra do grupo */}
-              <div className="group-header">{letter}</div>
-              <div className="contact-list">
-                {/* Cada contato no grupo */}
-                {groupedContacts[letter].map((contact) => (
-                  <div 
-                    key={contact.id} 
-                    className={`contact-item ${colorClass}-item`}
-                    onClick={() => navigate(`/contact/${contact.id}`)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <span className="icon"><FaUser/></span>
-                    {contact.contact_name}
-                    {/* Ícone de estrela se for favorito */}
-                    {!!contact.favorite && <span className="star-icon"><FaStar/></span>}
-                  </div>
-                ))}
-              </div>
-            </section>
-          );
-        })}
-      </main>
+        {/* Lista principal de contatos agrupados por letra */}
+        <main className="home-main">
+          {Object.keys(groupedContacts).map((letter) => {
+            const colorClass = getColorForLetter(letter);
+
+            return (
+              <section key={letter} className={`contact-group ${colorClass}`}>
+                {/* Cabeçalho com a letra do grupo */}
+                <div className="group-header">{letter}</div>
+                <div className="contact-list">
+                  {/* Cada contato no grupo */}
+                  {groupedContacts[letter].map((contact) => (
+                    <div 
+                      key={contact.id} 
+                      className={`contact-item ${colorClass}-item`}
+                      onClick={() => navigate(`/contact/${contact.id}`)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span className="icon"><FaUser/></span>
+                      {contact.contact_name}
+                      {/* Ícone de estrela se for favorito */}
+                      {!!contact.favorite && <span className="star-icon"><FaStar/></span>}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </main>
+      </div>
     </div>
   );
 }

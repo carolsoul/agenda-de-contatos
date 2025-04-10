@@ -86,8 +86,8 @@ function ContactForm() {
   };
 
   return (
-    <div className="container">
-      <h2>Adicionar Contato</h2>
+    <div className="add-contact-container">
+      <h2 className="add-contact-title">Adicionar Contato</h2>
 
       {/* Área de upload da foto */}
       <div className="photo-upload">
@@ -109,7 +109,7 @@ function ContactForm() {
       </div>
 
       {/* Formulário de cadastro do contato */}
-      <form onSubmit={handleSubmit}>
+      <form className="add-contact-form" onSubmit={handleSubmit}>
         <div className="input-container">
 
           {/* Campo: Nome */}

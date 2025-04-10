@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaUser, FaPhone, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import "../Register.css";
 
@@ -68,17 +68,17 @@ function Register() {
   };
 
   return (
-    <main className="sign-main">
-      <div className="sign-container">
-        <h1 className="sign-title">
+    <main className="register-main">
+      <div className="register-box">
+        <h1 className="register-title">
           FAÇA SEU
           <br />
           CADASTRO
         </h1>
 
         {/* Formulário de cadastro */}
-        <form onSubmit={handleSubmit}>
-          <div className="sign-group">
+        <form className="register-form" onSubmit={handleSubmit}>
+          <div className="register-group">
             {/* Campo de nome */}
             <div className="group">
               <FaUser className="icon" />
@@ -170,26 +170,25 @@ function Register() {
           )}
 
           {/* Botão de envio do formulário */}
-          <button type="submit" className="sign-btn">
+          <button type="submit" className="register-btn">
             Criar conta
           </button>
         </form>
 
-        {/* Informações adicionais e links */}
-        <div className="sign-info">
+      </div>
+
+      {/* Informações adicionais e links */}
+      <div className="register-info">
           <p>
-            Já tem uma conta? <a onClick={() => navigate("/")}>Faça login</a>
+            Já tem uma conta? <Link to="/">Faça login</Link>
           </p>
           <p>
             Esqueceu sua senha?{" "}
-            <a onClick={() => navigate("components/PasswordRecovery")}>
-              Recupere sua conta
-            </a>
+            <Link to="/PasswordRecovery">Recupere sua conta</Link>
           </p>
           <br />
           <img src="logo-orbita-small" alt="logo-orbita" />
         </div>
-      </div>
     </main>
   );
 }

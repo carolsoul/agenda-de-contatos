@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Hooks para capturar o ID da URL e navegar entre rotas
 import axios from "axios";
 import Modal from "react-modal"; // Modal para exibir mensagens e confirmações
-import { FaArrowLeft, FaStar, FaRegStar, FaEdit, FaTrash } from "react-icons/fa"; // Ícones
+import { FaArrowLeft, FaStar, FaRegStar, FaEdit, FaTrash, FaPhone, FaEnvelope, FaMapMarkedAlt } from "react-icons/fa"; // Ícones
 import "../ContactDetails.css";
 
 // Define qual elemento será considerado o root do modal
@@ -97,10 +97,26 @@ function ContactDetails() {
       {/* Informações do contato com cor de grupo */}
       <div className={`contact-info ${getGroupColor(contact.contact_name)}`}>
         <h3>Informações</h3>
-        <p>{contact.phone}</p>
+        <div className="contact-line-info">
+
+          <FaPhone className="contact-icon"/>
+          <p>{contact.phone}</p>
+        </div>
+
+        <div className="contact-line-info">
+        <FaEnvelope className="contact-icon" />
         <p>{contact.email}</p>
+        </div>
+        <div className="contact-line-info">
+        <FaMapMarkedAlt className="contact-icon" />
         <p>{contact.address}</p>
+        </div>
+        
+        <div className="contact-line-info">
+        <FaMapMarkedAlt className="contact-icon"/>
         <p>{contact.category}</p>
+        </div>
+
       </div>
 
       {/* Botões de ações: favoritar, editar e excluir */}

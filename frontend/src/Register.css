@@ -18,7 +18,7 @@
     --form-text-color-b: #ABAAAA;
 }
 
-.sign-main{
+.register-main{
     width: 100vw;
     height: 100%;
     background: rgb(0,255,127);
@@ -29,20 +29,20 @@
     padding: 20px;
 }
 
-.sign-container{
+.register-box{
     display: flex;
     gap: 150px;
     flex-direction: column;
 }
 
-.sign-title{
+.register-title{
     padding-top: 100px;
     font-family: "Montserrat", sans-serif;
     font-weight: 800;
     color: var(--bg-white);
 }
 
-.sign-group{
+.register-group{
     position: relative;
     width: 100%;
     margin-bottom: 10px;
@@ -51,7 +51,7 @@
     gap: 10px;
 }
 
-.sign-group input{
+.register-group input{
     width: 100%;
     padding: 30px 55px;
     border: none;
@@ -63,12 +63,12 @@
     color: var(--bg-white);
 }
 
-.sign-group input::placeholder{
+.register-group input::placeholder{
     color: var(--bg-white);
     opacity: 0.8;
 }
 
-.sign-group .icon{
+.register-group .icon{
     position: absolute;
     left: 25px;
     top: 50%;
@@ -78,7 +78,7 @@
     background-color: transparent;
 }
 
-.sign-btn{
+.register-btn{
     width: 100%;
     padding: 15px;
     margin: 50px 0;
@@ -90,8 +90,9 @@
     color: var(--bg-black);
     border-radius: 50px;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
-.sign-btn:hover{
+.register-btn:hover{
     background-color: var(--bg-black);
     color: var(--bg-white);
 }
@@ -101,14 +102,14 @@ p{
     font-family: "Poppins", sans-serif;
 }
 
-.sign-info a{
+.register-info a{
     font-weight: 600;
     color: var(--bg-white);
     text-decoration: underline;
     cursor: pointer;
 }
 
-.sign-info{
+.register-info{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -124,4 +125,24 @@ p{
     color: var(--bg-white);
     font-size: 18px;
     background-color: transparent;
+}
+
+@media (min-width: 768px){
+    .register-main{
+        padding: 50px;
+    }
+    .register-title{
+        font-size: 45px;
+    }
+    .register-box{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .register-form{
+      padding-top: 100px;
+    }
+    .register-info{
+        padding-top: 50px;
+    }
 }

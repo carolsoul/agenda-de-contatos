@@ -45,14 +45,14 @@ function Login() {
 
   return (
     <main className="login-main">
-      <div className="box">
-        <h1>
-          SUA REDE DE CONTATOS, <br />
+      <div className="login-box">
+        <h1 className="login-title">
+          SUA REDE DE <br /> CONTATOS, <br />
           SEM <br />
           COMPLICAÇÕES.
         </h1>
 
-        <form onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleSubmit}>
           {/* Exibe mensagem de sucesso ou erro */}
           {message && (
             <p className={`login-message ${message.type}`} role="alert">
@@ -89,9 +89,9 @@ function Login() {
             Entrar
           </button>
         </form>
-
-        {/* Informações extras com links para cadastro e recuperação de senha */}
-        <div className="info">
+      </div>
+      {/* Informações extras com links para cadastro e recuperação de senha */}
+      <div className="login-info">
           <p>
             Não tem uma conta? <Link to="/Register">Cadastre-se</Link>
           </p>
@@ -102,7 +102,6 @@ function Login() {
           <br />
           <img src="logo-orbita-small" alt="logo-orbita" />
         </div>
-      </div>
     </main>
   );
 }

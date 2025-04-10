@@ -58,6 +58,25 @@
     font-size: 13px;
 }
 
+.contact-line-info{
+    position: relative;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.contact-line-info p{
+    padding: 0 40px;
+}
+
+.contact-line-info .contact-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    background-color: transparent;
+}
+
 .detail-buttons{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -145,4 +164,16 @@
 .modal-buttons .modal-cancel:hover {
     background-color: #bbb;
 }
-  
+
+@media (min-width: 768px){
+    .contact-info{
+        margin: 0 80px;
+        padding: 30px;
+    }
+    .contact-info p{
+        font-size: 15px;
+    }
+    .contact-info h3{
+        font-size: 20px;
+    }
+}

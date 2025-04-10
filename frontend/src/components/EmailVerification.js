@@ -60,42 +60,47 @@ const EmailVerification = () => {
   };
 
   return (
-    <div className='email-verification'>
+    <main className='verification-main'>
+
       <h2 className='verification-title'>Verifique seu E-mail</h2>
 
-      {/* Imagem ilustrativa */}
-      <div className='password-img-2'>
-        <img src={ImgPassword2} alt="Descrição da imagem" />
+      <div className='verification-box'>
+        
+        <div className='password-img-2'>
+          <img src={ImgPassword2} alt="Descrição da imagem" />
+        </div>
+
+        <div className='verification-form'>
+          {/* Texto explicativo */}
+          <p className='verification-parag'>
+            Enviamos um código de 5 dígitos para o seu E-mail, digite-o nos campos abaixo.
+          </p>
+
+          {/* Inputs para os dígitos do código */}
+          <div className="code-inputs">
+            {code.map((num, index) => (
+              <input
+                key={index}
+                ref={(el) => (inputRefs.current[index] = el)} // Referência para controle de foco
+                type="text"
+                maxLength="1" // Apenas 1 número por campo
+                value={num}
+                onChange={(e) => handleChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+              />
+            ))}
+          </div>
+
+          {/* Exibe mensagem de erro ou sucesso */}
+          {message && <p className={`message ${message.type}`}>{message.text}</p>}
+
+          {/* Botão para enviar o código */}
+          <button type="submit" className='verification-btn' onClick={handleSubmit}>
+            Próximo
+          </button>
+        </div>
       </div>
-
-      {/* Texto explicativo */}
-      <p className='verification-parag'>
-        Enviamos um código de 5 dígitos para o seu E-mail, digite-o nos campos abaixo.
-      </p>
-
-      {/* Inputs para os dígitos do código */}
-      <div className="code-inputs">
-        {code.map((num, index) => (
-          <input
-            key={index}
-            ref={(el) => (inputRefs.current[index] = el)} // Referência para controle de foco
-            type="text"
-            maxLength="1" // Apenas 1 número por campo
-            value={num}
-            onChange={(e) => handleChange(index, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(index, e)}
-          />
-        ))}
-      </div>
-
-      {/* Exibe mensagem de erro ou sucesso */}
-      {message && <p className={`message ${message.type}`}>{message.text}</p>}
-
-      {/* Botão para enviar o código */}
-      <button type="submit" className='verification-btn' onClick={handleSubmit}>
-        Próximo
-      </button>
-    </div>
+    </main>
   );
 };
 
