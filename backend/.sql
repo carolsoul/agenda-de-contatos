@@ -28,3 +28,19 @@ INSERT INTO contatos (contact_name, phone, email, favorite, photo, address, `gro
 ('Joana Ribeiro', '11977778888', 'joana@email.com', FALSE, NULL, 'Av. Oceano, 707', 'purple', 'Família');
 
 SELECT * FROM contatos;
+
+-------------------------------------------------------------------------------------------------------------------
+
+-- Tabela de categorias
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) UNIQUE NOT NULL
+);
+
+INSERT INTO categorias (nome) VALUES ('Família'), ('Amigos'), ('Trabalho');
+
+ALTER TABLE contatos
+    ADD categoria_id INT,
+    ADD CONSTRAINT fk_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id);
+
+ALTER TABLE contatos DROP COLUMN category;
