@@ -6,7 +6,7 @@ import "../EmailVerification.css";
 
 // Componente de verificação de e-mail com código
 const EmailVerification = () => {
-  // Estado que armazena os 5 dígitos do código
+  // Armazena os 5 dígitos do código
   const [code, setCode] = useState(["", "", "", "", ""]);
   // Mensagem de feedback (sucesso ou erro)
   const [message, setMessage] = useState(null);
@@ -39,25 +39,35 @@ const EmailVerification = () => {
   const navigate = useNavigate();
 
   // Valida o código inserido e exibe a mensagem apropriada
-  const handleSubmit = () => {
-    const enteredCode = code.join(""); // Junta os números digitados
+  const handleSubmit = async () => {
+    const enteredCode = code.join(""); // Código digitado
+    const email = localStorage.getItem("email");
+  
+    try {
+      const response = await fetch("http://localhost:3000/EmailVerification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: enteredCode }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        setMessage({ text: data.message, type: "success" });
 
-    if (enteredCode === "12345") { // Código de verificação correto
-      setMessage({ text: "Código correto! Verificação concluída.", type: "success" });
-
-      // Após 2.5 segundos, redireciona para a página de nova senha
-      setTimeout(() => {
-        navigate("/NewPassword");
-      }, 2500);
-
-    } else {
-      // Código incorreto
-      setMessage({ text: "Código inválido. Tente novamente.", type: "error" });
+        setTimeout(() => navigate("/NewPassword"), 2500);
+      } else {
+        setMessage({ text: data.message, type: "error" });
+      }
+  
+    } catch (error) {
+      console.error(error);
+      setMessage({ text: "Erro ao verificar código.", type: "error" });
     }
-
-    // Limpa a mensagem após 2.5 segundos
+  
     setTimeout(() => setMessage(null), 2500);
   };
+  
 
   return (
     <main className='verification-main'>

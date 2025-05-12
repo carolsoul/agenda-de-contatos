@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from './components/AuthContext.js';
 import Login from "./pages/Login.js";
 import SignIn from "./pages/Register.js";
 import PasswordRecovery from './components/PasswordRecovery.js';
@@ -9,9 +10,13 @@ import Home from "./pages/Home.js";
 import AddContact from "./pages/AddContact.js";
 import ContactDetails from "./pages/ContactDetails.js";
 
+
 /* Rotas da aplicação */
 function App() {
+  const [contacts, setContacts] = useState([]);
+
   return (
+    <AuthProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -19,11 +24,12 @@ function App() {
         <Route path="/PasswordRecovery" element={<PasswordRecovery />} />
         <Route path="/EmailVerification" element={<EmailVerification />} />
         <Route path="/NewPassword" element={<NewPassword />} />
-        <Route path="/Home" element={<Home />} />
+        <Route path="/Home" element={<Home contacts={contacts} setContacts={setContacts} />} />
         <Route path="/add-contact" element={<AddContact />} />
-        <Route path="/contact/:id" element={<ContactDetails />} />
+        <Route path="/contact/:id" element={<ContactDetails setContacts={setContacts} />} />
       </Routes>
     </Router>
+    </AuthProvider>
   );
 }
 export default App;

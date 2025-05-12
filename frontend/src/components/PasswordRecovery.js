@@ -11,19 +11,32 @@ const PasswordRecovery = () => {
   const navigate = useNavigate();
 
   // Função executada ao enviar o formulário
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Evita o recarregamento da página
 
-    // Simula verificação do e-mail (em produção seria uma chamada à API)
-    if (email === 'teste@gmail.com') {
-      setMessage({text: "Link de recuperação enviado para o seu e-mail!", type: "email-success"});
+    try {
+      // Enviar o e-mail para o servidor
+      const response = await fetch("http://localhost:3000/PasswordRecovery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
-      setTimeout(()=> {
-        navigate("/EmailVerification");
-      }, 2500);
+      const data = await response.json();
 
-    } else {
-      setMessage({text: "Por favor, insira um e-mail válido.", type: "email-error"});
+      if (response.ok) {
+        localStorage.setItem("email", email);
+
+        setMessage({ text: "Link de recuperação enviado para o seu e-mail!", type: "email-success" });
+
+        setTimeout(() => {
+          navigate("/EmailVerification"); // Redireciona para a tela de verificação
+        }, 2500);
+      } else {
+        setMessage({ text: data.message || "Erro ao enviar o e-mail.", type: "email-error" });
+      }
+    } catch (error) {
+      setMessage({ text: "Erro ao conectar com o servidor.", type: "email-error" });
     }
   };
 

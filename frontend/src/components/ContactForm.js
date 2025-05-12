@@ -46,14 +46,18 @@ function ContactForm() {
     // Envia os dados para o backend usando axios
     try {
       await axios.post("http://localhost:3000/contatos", {
+        usuario_id: localStorage.getItem("id"), // Adiciona o usuário ao contato
         contact_name: name,
         phone,
         email,
         address,
         photo,
         favorite,
-        category,
+        category
       });
+
+      console.log("Enviando contato com usuario_id:", localStorage.getItem("id"));
+      
       navigate("/Home"); // Redireciona para a página Home após salvar
     } catch (error) {
       console.error("Erro ao adicionar contato:", error);

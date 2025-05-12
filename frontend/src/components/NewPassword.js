@@ -30,7 +30,7 @@ const NewPassword = () => {
   };
 
   // Manipula o envio do formulário
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Verifica se a senha é forte o suficiente
@@ -46,14 +46,31 @@ const NewPassword = () => {
       setTimeout(() => setMessage(null), 2500);
       return;
     }
-
-    // Caso tudo esteja certo
-    setMessage({ text: "Senha alterada com sucesso!", type: "success" });
-
-    // Redireciona para a tela inicial depois de 2.5s
-    setTimeout(() => {
-      navigate("/");
-    }, 2500);
+    try {
+      const response = await fetch("http://localhost:3000/api/usuario/NewPassword", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: "annacaroll2005@gmail.com", // Ou passa dinamicamente se tiver esse dado em algum estado
+          oldPassword: "11Ajl2005!", // Ou também dinamicamente
+          newPassword: password
+        })
+      });
+    
+      const data = await response.json();
+    
+      if (!response.ok) {
+        throw new Error(data.message || "Erro ao alterar senha");
+      }
+    
+      setMessage({ text: "Senha alterada com sucesso!", type: "success" });
+    } catch (error) {
+      setMessage({ text: error.message, type: "error" });
+      setTimeout(() => setMessage(null), 2500);
+      return;
+    }    
   };
 
   return (

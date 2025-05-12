@@ -4,191 +4,147 @@ import { FaUser, FaPhone, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-ic
 import "../Register.css";
 
 function Register() {
-  // Estados para armazenar os valores dos campos do formulário
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // Estado para mensagens de erro ou sucesso
   const [message, setMessage] = useState(null);
-
-  // Estados para alternar a visibilidade das senhas
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  // Função de validação de senha: mínimo 8 caracteres, pelo menos uma maiúscula, uma minúscula e um número
   const validatePassword = (pwd) => {
     return (
       pwd.length >= 8 &&
       /[A-Z]/.test(pwd) &&
       /[a-z]/.test(pwd) &&
-      /\d/.test(pwd)
+      /\d/.test(pwd) &&
+      /[\W_]/.test(pwd) // Pelo menos um caractere especial
     );
   };
 
-  // Lógica de envio do formulário
-  const handleSubmit = (e) => {
+  const validatePhone = (phone) => {
+    return /^\+?[1-9]\d{1,14}$/.test(phone); // Formato global E.164
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verifica se os e-mails coincidem
     if (email !== confirmEmail) {
       setMessage({ text: "Os e-mails não coincidem.", type: "error" });
       return;
     }
 
-    // Valida a senha
+    if (!validatePhone(phone)) {
+      setMessage({ text: "Telefone inválido. Use formato correto!", type: "error" });
+      return;
+    }
+
     if (!validatePassword(password)) {
       setMessage({
-        text:
-          "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, uma minúscula e um número.",
+        text: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.",
         type: "error",
       });
       return;
     }
 
-    // Verifica se as senhas coincidem
     if (password !== confirmPassword) {
       setMessage({ text: "As senhas não coincidem.", type: "error" });
       return;
     }
 
-    // Simula o cadastro com sucesso
-    console.log("Cadastro realizado com:", { name, phone, email, password });
-    setMessage({ text: "Cadastro realizado com sucesso!", type: "success" });
+    try {
+      setLoading(true);
 
-    // Redireciona para a página de login após 2 segundos
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, email, password }),
+      });
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        setMessage({ text: "Resposta inesperada do servidor.", type: "error" });
+        setLoading(false);
+        return;
+      }
+
+      if (response.ok && data.success) {
+        setMessage({ text: "Cadastro realizado com sucesso!", type: "success" });
+        setTimeout(() => navigate("/"), 2500);
+      } else {
+        setMessage({ text: data.message || "Erro ao cadastrar.", type: "error" });
+      }
+    } catch (error) {
+      setMessage({ text: "Erro ao conectar com o servidor.", type: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <main className="register-main">
       <div className="register-box">
-        <h1 className="register-title">
-          FAÇA SEU
-          <br />
-          CADASTRO
-        </h1>
+        <h1 className="register-title">FAÇA SEU CADASTRO</h1>
 
-        {/* Formulário de cadastro */}
         <form className="register-form" onSubmit={handleSubmit}>
           <div className="register-group">
-            {/* Campo de nome */}
             <div className="group">
               <FaUser className="icon" />
-              <input
-                type="text"
-                placeholder="Nome"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <input id="name" type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} required />
             </div>
 
-            {/* Campo de telefone */}
             <div className="group">
               <FaPhone className="icon" />
-              <input
-                type="text"
-                placeholder="Telefone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
+              <input id="phone" type="text" placeholder="Telefone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
             </div>
 
-            {/* Campo de e-mail */}
             <div className="group">
               <FaEnvelope className="icon" />
-              <input
-                type="email"
-                placeholder="E-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <input id="email" type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
 
-            {/* Campo para confirmar e-mail */}
             <div className="group">
               <FaEnvelope className="icon" />
-              <input
-                type="email"
-                placeholder="Confirmar e-mail"
-                value={confirmEmail}
-                onChange={(e) => setConfirmEmail(e.target.value)}
-                required
-              />
+              <input id="confirmEmail" type="email" placeholder="Confirmar e-mail" value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} required />
             </div>
 
-            {/* Campo de senha com ícone para mostrar/ocultar */}
             <div className="group">
               <FaLock className="icon" />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <span
-                className="eye-icon"
-                onClick={() => setShowPassword(!showPassword)}
-              >
+              <input id="password" type={showPassword ? "text" : "password"} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
 
-            {/* Campo para confirmar senha com ícone para mostrar/ocultar */}
             <div className="group">
               <FaLock className="icon" />
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirmar senha"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-              <span
-                className="eye-icon"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
+              <input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirmar senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
 
-          {/* Exibição de mensagens de erro ou sucesso */}
-          {message && (
-            <p className={`message ${message.type}`}>{message.text}</p>
-          )}
+          {message && <p className={`message ${message.type}`}>{message.text}</p>}
+          {loading && <p className="loading">Criando conta...</p>}
 
-          {/* Botão de envio do formulário */}
-          <button type="submit" className="register-btn">
-            Criar conta
+          <button type="submit" className="register-btn" disabled={loading}>
+            {loading ? "Enviando..." : "Criar conta"}
           </button>
         </form>
-
       </div>
 
-      {/* Informações adicionais e links */}
       <div className="register-info">
-          <p>
-            Já tem uma conta? <Link to="/">Faça login</Link>
-          </p>
-          <p>
-            Esqueceu sua senha?{" "}
-            <Link to="/PasswordRecovery">Recupere sua conta</Link>
-          </p>
-          <br />
-          <img src="logo-orbita-small" alt="logo-orbita" />
-        </div>
+        <p>Já tem uma conta? <Link to="/">Faça login</Link></p>
+        <p>Esqueceu sua senha? <Link to="/PasswordRecovery">Recupere sua conta</Link></p>
+      </div>
     </main>
   );
 }

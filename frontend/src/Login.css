@@ -137,6 +137,10 @@ a{
     align-items: center;
 }
 
+.input-error {
+    border: 2px solid red;
+  }
+
 @media (min-width: 768px){
     .login-main{
         padding: 50px;

@@ -8,7 +8,7 @@ import "../ContactDetails.css";
 // Define qual elemento será considerado o root do modal
 Modal.setAppElement("#root");
 
-function ContactDetails() {
+function ContactDetails({ setContacts }) {
   const { id } = useParams(); // Captura o ID do contato pela rota
   const navigate = useNavigate(); // Permite redirecionar o usuário
   const [contact, setContact] = useState(null); // Armazena os dados do contato
@@ -23,6 +23,7 @@ function ContactDetails() {
     axios
       .get(`http://localhost:3000/contatos/${id}`) // Requisição para buscar o contato
       .then((response) => {
+        console.log("Dados do contato recebidos:", response.data);
         if (isMounted) {
           setContact(response.data); // Armazena os dados do contato
           setIsFavorite(response.data.favorite); // Define se está favoritado
@@ -46,32 +47,37 @@ function ContactDetails() {
 
   // Função para excluir o contato
   const handleDelete = () => {
-    axios
-      .delete(`http://localhost:3000/contatos/${id}`)
-      .then(() => navigate("/")) // Redireciona para a home após exclusão
+    console.log("Tentando excluir contato com ID:", id);
+    axios.delete(`http://localhost:3000/contatos/${id}`)
+      .then(() => navigate("/home"))
       .catch((error) => console.error("Erro ao excluir contato:", error));
   };
 
   // Função para favoritar/desfavoritar o contato
-  const handleFavorite = () => {
-    axios
-      .put(`http://localhost:3000/contatos/${id}`, {
-        ...contact,
-        favorite: !isFavorite,
-      })
-      .then(() => {
-        setIsFavorite(!isFavorite); // Atualiza o estado após sucesso
-      })
-      .catch((error) => console.error("Erro ao favoritar contato:", error));
+  const handleFavorite = async () => {
+    try {
+      await axios.put(`http://localhost:3000/contatos/${id}`, { favorite: !isFavorite });
+  
+      setIsFavorite(!isFavorite); // Atualiza estado local
+  
+      // 🚀 Atualiza a lista global de contatos na Home
+      const userId = localStorage.getItem("id");
+      const response = await axios.get(`http://localhost:3000/contatos/usuario/${userId}`);
+      setContacts([...response.data]); // ✅ Garante que o estado seja atualizado
+    } catch (error) {
+      console.error("Erro ao favoritar contato:", error);
+    }
   };
+     
 
   // Define cor de fundo com base na letra do nome
   const getGroupColor = (name) => {
+    if (!name) return "default-group"; // Define um grupo padrão se `name` for indefinido
     const letter = name[0].toUpperCase();
     const isEven = (letter.charCodeAt(0) - 65) % 2 === 0;
     return isEven ? "green-group" : "purple-group";
   };
-
+  
   // Exibe modal de erro, se houver falha ao buscar contato
   if (error) {
     return (
