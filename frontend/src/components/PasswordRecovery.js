@@ -16,7 +16,7 @@ const PasswordRecovery = () => {
 
     try {
       // Enviar o e-mail para o servidor
-      const response = await fetch("http://localhost:3000/PasswordRecovery", {
+      const response = await fetch("http://localhost:3000/password-recovery", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -30,7 +30,7 @@ const PasswordRecovery = () => {
         setMessage({ text: "Link de recuperação enviado para o seu e-mail!", type: "email-success" });
 
         setTimeout(() => {
-          navigate("/EmailVerification"); // Redireciona para a tela de verificação
+          navigate("/email-verification"); // Redireciona para a tela de verificação
         }, 2500);
       } else {
         setMessage({ text: data.message || "Erro ao enviar o e-mail.", type: "email-error" });

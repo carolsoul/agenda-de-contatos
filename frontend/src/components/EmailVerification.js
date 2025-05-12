@@ -42,12 +42,13 @@ const EmailVerification = () => {
   const handleSubmit = async () => {
     const enteredCode = code.join(""); // Código digitado
     const email = localStorage.getItem("email");
+    console.log("Dados enviados:", { email, recoveryCode: enteredCode });
   
     try {
-      const response = await fetch("http://localhost:3000/EmailVerification", {
+      const response = await fetch("http://localhost:3000/email-verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: enteredCode }),
+        body: JSON.stringify({ email, recoveryCode: enteredCode }),
       });
   
       const data = await response.json();
@@ -83,7 +84,7 @@ const EmailVerification = () => {
         <div className='verification-form'>
           {/* Texto explicativo */}
           <p className='verification-parag'>
-            Enviamos um código de 5 dígitos para o seu E-mail, digite-o nos campos abaixo.
+            Enviamos um código de <b>5 dígitos</b> para o seu E-mail (verifique sua caixa de Spam), digite-o nos campos abaixo.
           </p>
 
           {/* Inputs para os dígitos do código */}

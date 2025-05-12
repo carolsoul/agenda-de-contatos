@@ -12,7 +12,6 @@ function ContactForm() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [photo, setPhoto] = useState(null); // Imagem em base64
-  const [favorite, setFavorite] = useState(false); // Valor booleano padrão
   const [category, setCategory] = useState(null);
 
   const navigate = useNavigate(); // Função para redirecionamento de página
@@ -52,8 +51,7 @@ function ContactForm() {
         email,
         address,
         photo,
-        favorite,
-        category
+        category, 
       });
 
       console.log("Enviando contato com usuario_id:", localStorage.getItem("id"));
@@ -85,7 +83,6 @@ function ContactForm() {
       address,
       photo,
       category,
-      favorite,
     });
   };
 

@@ -35,6 +35,12 @@ header{
   justify-content: space-between;
 }
 
+header p{
+  color: var(--green);
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .search-bar{
   transition: all 0.3s ease-in-out;
   background-color: var(--bg-white);
@@ -156,6 +162,22 @@ header{
 
 .star-icon{
   color: #ffc400;
+}
+
+.carregando{
+  transition: all 0.5s ease-in-out;
+  color: #1c3372;
+  background-color: #d7e2f8;
+  border: 2px solid #c6cdf5;
+  padding: 10px;
+}
+
+.erro{
+  transition: all 0.5s ease-in-out;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 2px solid #f5c6cb;
+  padding: 10px;
 }
 
 @media (min-width: 768px){

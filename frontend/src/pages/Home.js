@@ -15,27 +15,26 @@ function Home({ contacts, setContacts }) {
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem("id");
-  
+
       console.log("ID do usuário no localStorage:", userId);
-  
+
       if (!userId) {
         console.error("Usuário não logado.");
         return;
       }
-  
+
       try {
         const response = await axios.get(`http://localhost:3000/usuario/${userId}`);
-        console.log("Dados do usuário recebidos:", response.data); // ✅ Debug
-        setUserData(response.data); // ✅ Agora o nome será corretamente salvo
+        console.log("Dados do usuário recebidos:", response.data);
+        setUserData(response.data);
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
       }
     };
-  
-    fetchUserData();
-  }, []);  
 
-  // 🆕 Busca os contatos do usuário logado
+    fetchUserData();
+  }, []);
+
   useEffect(() => {
     const fetchContacts = async () => {
       const userId = localStorage.getItem("id");
@@ -47,24 +46,36 @@ function Home({ contacts, setContacts }) {
   
       try {
         const response = await axios.get(`http://localhost:3000/contatos/usuario/${userId}`);
-        console.log("Contatos recebidos:", response.data);
-        setContacts(response.data);
+        console.log("Contatos recebidos antes de salvar no estado:", response.data);
+  
+        // 🚀 Removendo "0" no final dos nomes antes de salvar no estado
+        const formattedContacts = response.data.map(contact => ({
+          ...contact,
+          contact_name: contact.contact_name.replace(/0$/, '') // ✅ Corrige nomes errados
+        }));
+  
+        setContacts(formattedContacts); // 🛠 Atualiza o estado com os nomes corretos
       } catch (error) {
         console.error("Erro ao buscar contatos:", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
     };
   
     fetchContacts();
-  }, [setContacts]);
+  }, [setContacts]); // 🔄 Esse efeito é chamado quando `setContacts` muda
   
-  
+
+  useEffect(() => {
+    console.log("Estado atualizado dos contatos na Home:", contacts);
+  }, [contacts]);
+
   const applyFilter = (contacts) => {
     let filtered = [...contacts];
 
     if (filter === "favorites") {
-      filtered = contacts.filter((contact) => Boolean(contact.favorite));
+      filtered = filtered.filter((contact) => Boolean(contact.favorito));
     } else if (filter === "friends") {
       filtered = filtered.filter((contact) => contact.category?.toLowerCase() === "amigos");
     } else if (filter === "family") {
@@ -80,6 +91,7 @@ function Home({ contacts, setContacts }) {
     } else {
       filtered.sort((a, b) => a.contact_name.localeCompare(b.contact_name));
     }
+
     return filtered;
   };
 
@@ -87,7 +99,7 @@ function Home({ contacts, setContacts }) {
     (contacts || []).filter((contact) =>
       contact.contact_name.toLowerCase().includes(search.toLowerCase())
     )
-  );  
+  );
 
   const groupedContacts = filteredContacts.reduce((acc, contact) => {
     const firstLetter = contact.contact_name[0].toUpperCase();
@@ -100,13 +112,13 @@ function Home({ contacts, setContacts }) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const letterIndex = alphabet.indexOf(letter);
     return letterIndex % 2 === 0 ? "green" : "purple";
-  };
+  };  
 
   return (
     <div className="home-container">
       <header>
         <div className="logo"></div>
-        {userData && <p>Bem-vindo, {userData.nome}!</p>}
+        {userData && <p>Olá, {userData.nome}!</p>}
         <button className="add-contact" onClick={() => navigate("/add-contact")}>
           +
         </button>
@@ -131,8 +143,8 @@ function Home({ contacts, setContacts }) {
           <button onClick={() => setFilter("work")}>Trabalho</button>
         </div>
 
-        {loading && <p>Carregando contatos...</p>}
-        {error && <p>Erro ao carregar contatos. Tente novamente!</p>}
+        {loading && <p className="carregando">Carregando contatos...</p>}
+        {error && <p className="erro">Erro ao carregar contatos. Tente novamente ou adicione um contato!</p>}
         
         {filteredContacts.length === 0 && !loading && !error && (
           <div className="no-contacts">
@@ -143,19 +155,16 @@ function Home({ contacts, setContacts }) {
         <main className="home-main">
           {Object.keys(groupedContacts).map((letter) => {
             const colorClass = getColorForLetter(letter);
+            
             return (
               <section key={letter} className={`contact-group ${colorClass}`}>
                 <div className="group-header">{letter}</div>
                 <div className="contact-list">
                   {groupedContacts[letter].map((contact) => (
-                    <div 
-                      key={contact.id} 
-                      className={`contact-item ${colorClass}-item`}
-                      onClick={() => navigate(`/contact/${contact.id}`)}
-                    >
+                    <div key={contact.id} className={`contact-item ${colorClass}-item`} onClick={() => navigate(`/contact/${contact.id}`)}>
                       <span className="icon"><FaUser/></span>
                       {contact.contact_name}
-                      {!!contact.favorite && <span className="star-icon"><FaStar/></span>}
+                      {contact.favorito && <span className="star-icon"><FaStar/></span>}
                     </div>
                   ))}
                 </div>

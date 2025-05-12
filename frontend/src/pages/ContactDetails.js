@@ -55,14 +55,18 @@ function ContactDetails({ setContacts }) {
 
   // Função para favoritar/desfavoritar o contato
   const handleFavorite = async () => {
+    console.log("Antes de favoritar:", contact.contact_name, contact.favorito)
     try {
-      await axios.put(`http://localhost:3000/contatos/${id}`, { favorite: !isFavorite });
+      await axios.put(`http://localhost:3000/contatos/${id}/favoritar`, { favorito: !isFavorite });
+
   
       setIsFavorite(!isFavorite); // Atualiza estado local
   
       // 🚀 Atualiza a lista global de contatos na Home
       const userId = localStorage.getItem("id");
       const response = await axios.get(`http://localhost:3000/contatos/usuario/${userId}`);
+
+      console.log("Após favoritar:", response.data);
       setContacts([...response.data]); // ✅ Garante que o estado seja atualizado
     } catch (error) {
       console.error("Erro ao favoritar contato:", error);
@@ -99,6 +103,16 @@ function ContactDetails({ setContacts }) {
         <FaArrowLeft className="arrow" onClick={() => navigate("/Home")} />
         <h2 className="contact-title">{contact.contact_name}</h2>
       </div>
+
+      {/* Bloco ara exibir a foto*/}
+      <div className="contact-photo-container">
+        {contact.photo ? (
+          <img src={contact.photo} alt={`Foto de ${contact.contact_name}`} className="contact-photo" />
+        ) : (
+          <p>Sem foto disponível</p>
+        )}
+      </div>
+
 
       {/* Informações do contato com cor de grupo */}
       <div className={`contact-info ${getGroupColor(contact.contact_name)}`}>
