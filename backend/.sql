@@ -26,6 +26,7 @@ INSERT INTO contatos (contact_name, phone, email, favorite, photo, address, `gro
 ('Igor Pires', '11955556666', 'igor@email.com', TRUE, NULL, 'Alameda Rio, 606', 'green', 'Trabalho'),
 ('Joana Ribeiro', '11977778888', 'joana@email.com', FALSE, NULL, 'Av. Oceano, 707', 'purple', 'Família');
 
+<<<<<<< HEAD
 USE agenda;
 CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,3 +65,22 @@ INSERT INTO usuarios (user_name, user_email, user_password, user_phone)
 VALUES ('Maria Silva', 'maria@email.com', 'senha123', '11987654321');
 
 SELECT * FROM usuarios;
+=======
+SELECT * FROM contatos;
+
+-------------------------------------------------------------------------------------------------------------------
+
+-- Tabela de categorias
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) UNIQUE NOT NULL
+);
+
+INSERT INTO categorias (nome) VALUES ('Família'), ('Amigos'), ('Trabalho');
+
+ALTER TABLE contatos
+    ADD categoria_id INT,
+    ADD CONSTRAINT fk_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id);
+
+ALTER TABLE contatos DROP COLUMN category;
+>>>>>>> 63e08e10401a123bd9fcb9c1f8904ee386c89019
