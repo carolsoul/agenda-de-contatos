@@ -20,6 +20,8 @@
 .contact-photo-container {
     text-align: center;
     margin: 15px 0;
+    font-weight: bold;
+    color: var(--green);
 }
   
 .contact-photo {
@@ -179,6 +181,9 @@
 }
 
 @media (min-width: 768px){
+    .contact-details-container{
+        min-height: 600px;
+    }
     .contact-info{
         margin: 0 80px;
         padding: 30px;
