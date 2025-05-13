@@ -37,6 +37,7 @@ Aplicação web para cadastro e login de usuários, com foco em organização de
 │   │   │   ├── img_password_3.png
 │   │   │   ├── logo-orbita-green.svg
 │   │   ├── 📂 components
+│   │   │   ├── AuthContext.js
 │   │   │   ├── ContactForm.js
 │   │   │   ├── ContactList.js
 │   │   │   ├── EmailVerification.js
@@ -45,6 +46,7 @@ Aplicação web para cadastro e login de usuários, com foco em organização de
 │   │   ├── 📂 pages
 │   │   │   ├── AddContact.js
 │   │   │   ├── ContactDetails.js
+│   │   │   ├── EditContact.js
 │   │   │   ├── Home.js
 │   │   │   ├── Login.js
 │   │   │   ├── Register.js
@@ -52,6 +54,7 @@ Aplicação web para cadastro e login de usuários, com foco em organização de
 │   │   ├── App.js
 │   │   ├── ContactDetails.css
 │   │   ├── ContactForm.css
+│   │   ├── EditContact.css
 │   │   ├── EmailVerification.css
 │   │   ├── Home.css
 │   │   ├── index.css
@@ -63,7 +66,8 @@ Aplicação web para cadastro e login de usuários, com foco em organização de
 │   ├── .gitignore
 │   ├── package-lock.json
 │   ├── package.json
-│   ├── README.md
+├── gerarHash.js
+├── README.md
 ```
 
 ## 📌 Como Rodar o Projeto
