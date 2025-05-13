@@ -73,6 +73,12 @@ async function enviarCodigo(email, codigo) {
   }
 }
 
+// Função para gerar um código aleatório de 5 dígitos
+const generateVerificationCode = () => {
+  return Math.floor(10000 + Math.random() * 90000); // Gera um número entre 10000 e 99999
+};
+
+
 // Rota de teste
 app.get("/", (req, res) => {
   return res.send("API funcionando!");
@@ -228,10 +234,9 @@ app.post("/contatos", async (req, res) => {
   }
 });
 
-const recoveryCodes = new Map(); // Armazena os códigos temporários
+// Rota de confirmação do email e envio do codigo
 
-// Rota de recuperação de senha
-app.post("/password-recovery", async (req, res) => {
+app.post("/email-confirmation", async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
@@ -245,42 +250,88 @@ app.post("/password-recovery", async (req, res) => {
       return res.status(404).json({ success: false, message: "E-mail não encontrado." });
     }
 
-    const recoveryCode = Math.floor(10000 + Math.random() * 90000);
-    recoveryCodes.set(email, recoveryCode); // Salva o código temporariamente
+    const recoveryCode = Math.floor(10000 + Math.random() * 90000).toString();
+
+    // 🔥 Armazena o e-mail e o código de recuperação na mesma tabela
+    await db.query(
+      `REPLACE INTO codigos_recuperacao (email, codigo, criado_em) VALUES (?, ?, NOW())`,
+      [email, recoveryCode]
+    );
 
     await enviarCodigo(email, recoveryCode);
 
     return res.status(200).json({ success: true, message: "Código enviado para seu e-mail." });
+
   } catch (error) {
     console.error("Erro na recuperação de senha:", error);
     return res.status(500).json({ success: false, message: "Erro interno no servidor." });
   }
 });
 
+
 // Rota que verifica o código do usuário
-app.post("/email-verification", async (req, res) => {
-  console.log("Dados recebidos:", req.body);
+
+app.post("/code-verification", async (req, res) => {
   const { recoveryCode } = req.body;
 
+  console.log("📩 Código recebido para verificação:", recoveryCode);
+
   if (!recoveryCode) {
-    return res.status(400).json({ success: false, message: "Código obrigatório." });
+    return res.status(400).json({ success: false, message: "Código inválido." });
   }
 
-  const storedCode = [...recoveryCodes.values()].find(code => code === recoveryCode);
+  try {
+    const [rows] = await db.query("SELECT email, criado_em FROM codigos_recuperacao WHERE codigo = ?", [recoveryCode]);
 
-  if (!storedCode) {
-    return res.status(404).json({ success: false, message: "Código expirado ou inválido." });
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Código expirado ou inválido." });
+    }
+
+    const email = rows[0].email;
+    const codigoCriado = new Date(rows[0].criado_em);
+    const agora = new Date();
+    const minutosPassados = (agora - codigoCriado) / 1000 / 60;
+
+    if (minutosPassados > 5) {
+      await db.query("DELETE FROM codigos_recuperacao WHERE email = ?", [email]);
+      return res.status(400).json({ success: false, message: "Código expirado." });
+    }
+
+    return res.status(200).json({ success: true, message: "Código validado com sucesso!", email });
+
+  } catch (error) {
+    console.error("Erro na verificação de código:", error);
+    return res.status(500).json({ success: false, message: "Erro interno no servidor." });
+  }
+});
+
+// Rota de atualização de senha
+app.put("/new-password", async (req, res) => {
+  const { newPassword, recoveryCode } = req.body;
+
+  if (!newPassword || !recoveryCode) {
+    return res.status(400).json({ success: false, message: "Código e nova senha são obrigatórios." });
   }
 
-  console.log("Dados recebidos na verificação:", req.body);
+  try {
+    const [rows] = await db.query("SELECT email FROM codigos_recuperacao WHERE codigo = ?", [recoveryCode]);
 
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Código inválido ou expirado." });
+    }
 
-  // 🔥 Após validação, remova o código para evitar reutilização
-  recoveryCodes.forEach((code, email) => {
-    if (code === recoveryCode) recoveryCodes.delete(email);
-  });
+    const email = rows[0].email;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-  return res.status(200).json({ success: true, message: "Código validado com sucesso!" });
+    await db.query("UPDATE usuarios SET senha = ? WHERE email = ?", [hashedPassword, email]);
+    await db.query("DELETE FROM codigos_recuperacao WHERE email = ?", [email]); // 🔥 Exclui o código após uso
+
+    return res.status(200).json({ success: true, message: "Senha atualizada com sucesso!" });
+
+  } catch (error) {
+    console.error("Erro ao atualizar senha:", error);
+    return res.status(500).json({ success: false, message: "Erro interno no servidor." });
+  }
 });
 
 // Rota de atualização de contato

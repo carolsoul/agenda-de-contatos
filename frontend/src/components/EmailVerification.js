@@ -1,29 +1,30 @@
 // Importações de hooks e recursos
-import React, { useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom"; // Agora também importamos useLocation
 import ImgPassword2 from "../assets/img_password_2.png";
 import "../EmailVerification.css";
 
-// Componente de verificação de e-mail com código
 const EmailVerification = () => {
-  // Armazena os 5 dígitos do código
   const [code, setCode] = useState(["", "", "", "", ""]);
-  // Mensagem de feedback (sucesso ou erro)
   const [message, setMessage] = useState(null);
-  // Referências para os inputs de código (usado para mover o foco)
   const inputRefs = useRef([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🔥 Recupera o e-mail passado da tela anterior via navegação
+  const email = location.state?.email;
+
+  console.log("📩 Email recebido via state:", email);
 
   // Atualiza o valor de um dos inputs de código
   const handleChange = (index, value) => {
-    // Permite apenas números
     if (!/^\d*$/.test(value)) return;
 
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
 
-    // Move o foco para o próximo campo automaticamente
-    if (value && index < 4) {
+    if (value && index < 4 && inputRefs.current[index + 1]) {
       inputRefs.current[index + 1].focus();
     }
   };
@@ -35,66 +36,70 @@ const EmailVerification = () => {
     }
   };
 
-  // Hook de navegação para redirecionar o usuário
-  const navigate = useNavigate();
-
-  // Valida o código inserido e exibe a mensagem apropriada
+  // Valida o código inserido e passa o e-mail para `NewPassword.js`
   const handleSubmit = async () => {
-    const enteredCode = code.join(""); // Código digitado
-    const email = localStorage.getItem("email");
-    console.log("Dados enviados:", { email, recoveryCode: enteredCode });
-  
+    const enteredCode = code.join("");
+
+    if (code.some((digit) => digit === "")) {
+      setMessage({ text: "Por favor, preencha todos os dígitos.", type: "error" });
+      return;
+    }
+
+    if (!email) {
+      setMessage({ text: "E-mail não encontrado. Retorne à etapa anterior.", type: "error" });
+      return;
+    }
+
+    console.log("📩 Enviando código para verificação:", enteredCode);
+
     try {
-      const response = await fetch("http://localhost:3000/email-verification", {
+      const response = await fetch("http://localhost:3000/code-verification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, recoveryCode: enteredCode }),
+        body: JSON.stringify({ recoveryCode: enteredCode }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         setMessage({ text: data.message, type: "success" });
-
-        setTimeout(() => navigate("/NewPassword"), 2500);
+        setTimeout(() => {
+          navigate("/new-password", { state: { email: data.email, recoveryCode: enteredCode } });
+        }, 2500);
       } else {
         setMessage({ text: data.message, type: "error" });
       }
-  
     } catch (error) {
       console.error(error);
       setMessage({ text: "Erro ao verificar código.", type: "error" });
     }
-  
+
     setTimeout(() => setMessage(null), 2500);
   };
-  
 
   return (
-    <main className='verification-main'>
+    <main className="verification-main">
+      <h2 className="verification-title">Verifique seu E-mail</h2>
 
-      <h2 className='verification-title'>Verifique seu E-mail</h2>
-
-      <div className='verification-box'>
-        
-        <div className='password-img-2'>
+      <div className="verification-box">
+        <div className="password-img-2">
           <img src={ImgPassword2} alt="Descrição da imagem" />
         </div>
 
-        <div className='verification-form'>
-          {/* Texto explicativo */}
-          <p className='verification-parag'>
-            Enviamos um código de <b>5 dígitos</b> para o seu E-mail (verifique sua caixa de Spam), digite-o nos campos abaixo.
+        <div className="verification-form">
+          <p className="verification-parag">
+            Enviamos um código de <b>5 dígitos</b> para o seu E-mail (verifique sua caixa de spam), digite-o nos campos abaixo.
           </p>
 
-          {/* Inputs para os dígitos do código */}
           <div className="code-inputs">
             {code.map((num, index) => (
               <input
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)} // Referência para controle de foco
+                inputMode="numeric"
+                aria-label={`Dígito ${index + 1}`}
+                ref={(el) => (inputRefs.current[index] = el)}
                 type="text"
-                maxLength="1" // Apenas 1 número por campo
+                maxLength="1"
                 value={num}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
@@ -102,11 +107,9 @@ const EmailVerification = () => {
             ))}
           </div>
 
-          {/* Exibe mensagem de erro ou sucesso */}
           {message && <p className={`message ${message.type}`}>{message.text}</p>}
 
-          {/* Botão para enviar o código */}
-          <button type="submit" className='verification-btn' onClick={handleSubmit}>
+          <button type="submit" className="verification-btn" onClick={handleSubmit}>
             Próximo
           </button>
         </div>

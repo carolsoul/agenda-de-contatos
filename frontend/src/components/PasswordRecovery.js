@@ -2,21 +2,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom"; // Hook para navegação entre páginas
 import { FaEnvelope } from "react-icons/fa"; // Ícone de envelope
-import ImgPassword1 from "../assets/img_password_1.png" // Imagem ilustrativa
+import ImgPassword1 from "../assets/img_password_1.png"; // Imagem ilustrativa
 import "../PasswordRecovery.css"; // Estilo CSS específico para o componente
 
 const PasswordRecovery = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(null);
   const navigate = useNavigate();
 
   // Função executada ao enviar o formulário
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita o recarregamento da página
 
+    if (!email) {
+      setMessage({ text: "Por favor, insira um e-mail válido.", type: "email-error" });
+      setTimeout(() => setMessage(null), 2500);
+      return;
+    }
+
     try {
       // Enviar o e-mail para o servidor
-      const response = await fetch("http://localhost:3000/password-recovery", {
+      const response = await fetch("http://localhost:3000/email-confirmation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -25,12 +31,10 @@ const PasswordRecovery = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("email", email);
-
-        setMessage({ text: "Link de recuperação enviado para o seu e-mail!", type: "email-success" });
+        setMessage({ text: "Código de recuperação enviado para o seu e-mail!", type: "email-success" });
 
         setTimeout(() => {
-          navigate("/email-verification"); // Redireciona para a tela de verificação
+          navigate("/code-verification", { state: { email } }); // 🔥 Agora passamos o e-mail via navegação
         }, 2500);
       } else {
         setMessage({ text: data.message || "Erro ao enviar o e-mail.", type: "email-error" });
@@ -71,12 +75,12 @@ const PasswordRecovery = () => {
           </div>
 
           {/* Exibe mensagem de feedback, se houver */}
-          {message && <p className={`email-message ${message.type}`}>{message.text}</p>}
+          {message && <p className={`message ${message.type}`}>{message.text}</p>}
 
           <button type="submit" className='password-btn'>Próximo</button>
 
           {/* Botão de cancelar (volta para a home) */}
-          <button className='cancel-btn' onClick={() => navigate("/")}>Cancelar</button>
+          <button type='button' className='cancel-btn' onClick={() => navigate("/")}>Cancelar</button>
         </form>
       </div>
     </main>

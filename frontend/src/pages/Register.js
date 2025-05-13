@@ -143,7 +143,7 @@ function Register() {
 
       <div className="register-info">
         <p>Já tem uma conta? <Link to="/">Faça login</Link></p>
-        <p>Esqueceu sua senha? <Link to="/PasswordRecovery">Recupere sua conta</Link></p>
+        <p>Esqueceu sua senha? <Link to="/email-confirmation">Recupere sua conta</Link></p>
       </div>
     </main>
   );

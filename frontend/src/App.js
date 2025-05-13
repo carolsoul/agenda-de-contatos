@@ -22,9 +22,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/Register" element={<SignIn />} />
-        <Route path="/PasswordRecovery" element={<PasswordRecovery />} />
-        <Route path="/email-verification" element={<EmailVerification />} />
-        <Route path="/NewPassword" element={<NewPassword />} />
+        <Route path="/email-confirmation" element={<PasswordRecovery />} />
+        <Route path="/code-verification" element={<EmailVerification />} />
+        <Route path="/new-password" element={<NewPassword />} />
         <Route path="/Home" element={<Home contacts={contacts} setContacts={setContacts} />} />
         <Route path="/add-contact" element={<AddContact />} />
         <Route path="/contact/:id" element={<ContactDetails setContacts={setContacts} />} />

@@ -87,7 +87,7 @@ function Login() {
 
       <div className="login-info">
         <p>Não tem uma conta? <Link to="/Register">Cadastre-se</Link></p>
-        <p>Esqueceu sua senha? <Link to="/PasswordRecovery">Recupere sua conta</Link></p>
+        <p>Esqueceu sua senha? <Link to="/email-confirmation">Recupere sua conta</Link></p>
       </div>
     </main>
   );

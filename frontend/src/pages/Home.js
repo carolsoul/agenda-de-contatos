@@ -35,36 +35,37 @@ function Home({ contacts, setContacts }) {
     fetchUserData();
   }, []);
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      const userId = localStorage.getItem("id");
-  
-      if (!userId) {
-        console.error("Usuário não logado.");
-        return;
-      }
-  
-      try {
-        const response = await axios.get(`http://localhost:3000/contatos/usuario/${userId}`);
-        console.log("Contatos recebidos antes de salvar no estado:", response.data);
-  
-        // 🚀 Removendo "0" no final dos nomes antes de salvar no estado
-        const formattedContacts = response.data.map(contact => ({
-          ...contact,
-          contact_name: contact.contact_name.replace(/0$/, '') // ✅ Corrige nomes errados
-        }));
-  
-        setContacts(formattedContacts); // 🛠 Atualiza o estado com os nomes corretos
-      } catch (error) {
-        console.error("Erro ao buscar contatos:", error);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchContacts();
-  }, [setContacts]); // 🔄 Esse efeito é chamado quando `setContacts` muda
+ useEffect(() => {
+  const fetchContacts = async () => {
+    const userId = localStorage.getItem("id");
+
+    if (!userId) {
+      console.error("Usuário não logado.");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:3000/contatos/usuario/${userId}`);
+      console.log("Contatos recebidos antes de salvar no estado:", response.data);
+
+      // 🚀 Remove "0" do final do nome ANTES de salvar no estado
+      const formattedContacts = response.data.map(contact => ({
+        ...contact,
+        contact_name: contact.contact_name.endsWith("0") ? contact.contact_name.slice(0, -1) : contact.contact_name
+      }));
+
+      setContacts(formattedContacts); // 🛠 Atualiza o estado com os nomes corretos
+    } catch (error) {
+      console.error("Erro ao buscar contatos:", error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchContacts();
+}, [setContacts]);
+
   
 
   useEffect(() => {
@@ -132,6 +133,9 @@ function Home({ contacts, setContacts }) {
         className="search-bar"
       />
 
+      {loading && <p className="carregando">Carregando contatos...</p>}
+      {error && <p className="erro">Erro ao carregar contatos. Tente novamente ou adicione um contato!</p>}
+
       <div className="sidebar-main-container">
         <div className="sidebar">
           <button onClick={() => setFilter("all")}>Todos</button>
@@ -142,9 +146,6 @@ function Home({ contacts, setContacts }) {
           <button onClick={() => setFilter("family")}>Família</button>
           <button onClick={() => setFilter("work")}>Trabalho</button>
         </div>
-
-        {loading && <p className="carregando">Carregando contatos...</p>}
-        {error && <p className="erro">Erro ao carregar contatos. Tente novamente ou adicione um contato!</p>}
         
         {filteredContacts.length === 0 && !loading && !error && (
           <div className="no-contacts">
@@ -161,11 +162,15 @@ function Home({ contacts, setContacts }) {
                 <div className="group-header">{letter}</div>
                 <div className="contact-list">
                   {groupedContacts[letter].map((contact) => (
+
                     <div key={contact.id} className={`contact-item ${colorClass}-item`} onClick={() => navigate(`/contact/${contact.id}`)}>
                       <span className="icon"><FaUser/></span>
-                      {contact.contact_name}
-                      {contact.favorito && <span className="star-icon"><FaStar/></span>}
+                      {contact.contact_name} {/* ✅ Removido qualquer erro de concatenação */}
+                      {contact.favorito === 1 && <span className="star-icon"><FaStar/></span>} {/* 🔥 Corrigido: agora exibe a estrela corretamente */}
                     </div>
+
+
+
                   ))}
                 </div>
               </section>
