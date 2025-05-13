@@ -5,6 +5,7 @@ import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import { EventEmitter } from "events";
+import { text } from "stream/consumers";
 
 EventEmitter.defaultMaxListeners = 20;
 
@@ -64,15 +65,12 @@ async function enviarCodigo(email, codigo) {
       from: '"Suporte - Órbita" <' + process.env.EMAIL_USER + '>',
       to: email,
       subject: "Código de Recuperação",
-      html: `
-              <h1 style="color: #B056FF;> Seu código de recuperação é: </h1> 
-              <br>
-              ${codigo}. 
-              <br>
-              <p> Digite-o na página de verificação para redefinir sua senha.</p>
-              <footer style="background-color: #2B2B2B text-align: center; margin-top: 20px; padding: 30px; font-size: 14px; color: #FFF;">
-                <p>&copy; 2025 Órbita. Todos os direitos reservados.</p>
-              </footer>
+      text: `Seu código de recuperação é:
+      
+      ${codigo}. 
+      
+      Digite-o na página de verificação para redefinir sua senha.
+              
       `,
     };
 
@@ -88,35 +86,43 @@ const enviarBoasVindas = async (email, nome) => {
   const mailOptions = {
     from: '"Órbita" <' + process.env.EMAIL_USER + '>',
     to: email,
-    subject: "Órbita - Seu cadastro foi concluído com sucesso!",
+    subject: "Seu cadastro foi concluído com sucesso!",
     html: `
-
-          <h1 style="color: #7D00FF; text-align: center;">BEM-VINDO(A) A SUA NOVA AGENDA DE CONTATOS</h1>
+        <main>
+          <h1 style="color: #7D00FF;">Bem-vindo(a) à sua nova agenda de contatos</h1>
     
-          <p>Olá, ${nome}! 👋</p>
+          <h2>Olá, ${nome}! 👋</h2>
 
            <p> Estamos felizes por tê-lo(a) conosco.</p>
            <p>Agora você tem acesso a uma plataforma completa para gerenciar seus contatos sem complicações.</p>
-           
+           <br>
             <div class="benefits">
-              <h2 style="color: #7D00FF;">O que você ganha ao usar nossa plataforma?</h2>
+              <h3 style="color: #7D00FF;">O que você ganha ao usar nossa plataforma?</h3>
               <ul>
                 <li>📞 Organização eficiente dos seus contatos.</li>
+                <br>
                 <li>⭐ Marcação de favoritos para acesso rápido.</li>
+                <br>
                 <li>🔍 Busca avançada para encontrar informações rapidamente.</li>
+                <br>
                 <li>🛠 Interface intuitiva e fácil de usar.</li>
               </ul>
             </div>
 
-            <h2>Comece agora explorando tudo o que podemos oferecer!</h2>
+            <br>
 
+            <h3>Comece agora explorando tudo o que podemos oferecer!</h3>
+
+            <br> 
             <p>Se precisar de ajuda, estamos sempre por aqui.</p>
            <p>Atenciosamente, <br> Equipe de Suporte Orbita</p>
 
-           <footer style="background-color: #2B2B2B text-align: center; margin-top: 20px; padding: 30px; font-size: 14px; color: #FFF;">
+           <br>
+
+           <footer style="background-color: #2B2B2B; text-align: center; padding: 10px; font-size: 15px; color: #FFF;">
             <p>&copy; 2025 Órbita. Todos os direitos reservados.</p>
           </footer>
-           
+        </main>
            `,
   };
   try {
