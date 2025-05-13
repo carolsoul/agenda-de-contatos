@@ -6,6 +6,7 @@ import "../Login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ function Login() {
 
           <div className="group">
             <FaLock className="icon" />
-            <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type={showPassword ? "text" : "password"} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
 
           <button type="submit" className="login-btn">Entrar</button>

@@ -57,13 +57,23 @@ transporter.verify((error, success) => {
   }
 });
 
+// E-mail com o código de recuperação de senha
 async function enviarCodigo(email, codigo) {
   try {
     const mailOptions = {
-      from: '"Suporte - Orbita Company" <' + process.env.EMAIL_USER + '>',
+      from: '"Suporte - Órbita" <' + process.env.EMAIL_USER + '>',
       to: email,
       subject: "Código de Recuperação",
-      text: `Seu código de recuperação é: ${codigo}. Digite-o na página de verificação para redefinir sua senha.`,
+      html: `
+              <h1 style="color: #B056FF;> Seu código de recuperação é: </h1> 
+              <br>
+              ${codigo}. 
+              <br>
+              <p> Digite-o na página de verificação para redefinir sua senha.</p>
+              <footer style="background-color: #2B2B2B text-align: center; margin-top: 20px; padding: 30px; font-size: 14px; color: #FFF;">
+                <p>&copy; 2025 Órbita. Todos os direitos reservados.</p>
+              </footer>
+      `,
     };
 
     await transporter.sendMail(mailOptions);
@@ -72,6 +82,50 @@ async function enviarCodigo(email, codigo) {
     console.error("Erro ao enviar e-mail:", error);
   }
 }
+
+// E-mail de boas-vindas
+const enviarBoasVindas = async (email, nome) => {
+  const mailOptions = {
+    from: '"Órbita" <' + process.env.EMAIL_USER + '>',
+    to: email,
+    subject: "Órbita - Seu cadastro foi concluído com sucesso!",
+    html: `
+
+          <h1 style="color: #7D00FF; text-align: center;">BEM-VINDO(A) A SUA NOVA AGENDA DE CONTATOS</h1>
+    
+          <p>Olá, ${nome}! 👋</p>
+
+           <p> Estamos felizes por tê-lo(a) conosco.</p>
+           <p>Agora você tem acesso a uma plataforma completa para gerenciar seus contatos sem complicações.</p>
+           
+            <div class="benefits">
+              <h2 style="color: #7D00FF;">O que você ganha ao usar nossa plataforma?</h2>
+              <ul>
+                <li>📞 Organização eficiente dos seus contatos.</li>
+                <li>⭐ Marcação de favoritos para acesso rápido.</li>
+                <li>🔍 Busca avançada para encontrar informações rapidamente.</li>
+                <li>🛠 Interface intuitiva e fácil de usar.</li>
+              </ul>
+            </div>
+
+            <h2>Comece agora explorando tudo o que podemos oferecer!</h2>
+
+            <p>Se precisar de ajuda, estamos sempre por aqui.</p>
+           <p>Atenciosamente, <br> Equipe de Suporte Orbita</p>
+
+           <footer style="background-color: #2B2B2B text-align: center; margin-top: 20px; padding: 30px; font-size: 14px; color: #FFF;">
+            <p>&copy; 2025 Órbita. Todos os direitos reservados.</p>
+          </footer>
+           
+           `,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("E-mail enviado para:", email);
+  } catch (error) {
+    console.error("Erro ao enviar e-mail:", error);
+  }
+};
 
 // Função para gerar um código aleatório de 5 dígitos
 const generateVerificationCode = () => {
@@ -200,6 +254,8 @@ app.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(senha, 10);
     await db.query("INSERT INTO usuarios (nome, user_phone, email, senha) VALUES (?, ?, ?, ?)", [nome, user_phone, email, hashedPassword]);
 
+    await enviarBoasVindas(email, nome);
+
     return res.status(201).json({ success: true, message: "Usuário cadastrado com sucesso!" });
   } catch (err) {
     console.error("Erro ao registrar usuário:", err);
@@ -252,7 +308,7 @@ app.post("/email-confirmation", async (req, res) => {
 
     const recoveryCode = Math.floor(10000 + Math.random() * 90000).toString();
 
-    // 🔥 Armazena o e-mail e o código de recuperação na mesma tabela
+    // Armazena o e-mail e o código de recuperação na mesma tabela
     await db.query(
       `REPLACE INTO codigos_recuperacao (email, codigo, criado_em) VALUES (?, ?, NOW())`,
       [email, recoveryCode]
@@ -286,7 +342,7 @@ app.post("/code-verification", async (req, res) => {
     if (rows.length === 0) {
       return res.status(404).json({ success: false, message: "Código expirado ou inválido." });
     }
-
+    
     const email = rows[0].email;
     const codigoCriado = new Date(rows[0].criado_em);
     const agora = new Date();
@@ -324,7 +380,7 @@ app.put("/new-password", async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await db.query("UPDATE usuarios SET senha = ? WHERE email = ?", [hashedPassword, email]);
-    await db.query("DELETE FROM codigos_recuperacao WHERE email = ?", [email]); // 🔥 Exclui o código após uso
+    await db.query("DELETE FROM codigos_recuperacao WHERE email = ?", [email]); // Exclui o código após uso
 
     return res.status(200).json({ success: true, message: "Senha atualizada com sucesso!" });
 

@@ -127,6 +127,13 @@ p{
     background-color: transparent;
 }
 
+.register-form p.valid{
+    color: var(--green);
+}
+.register-form p.invalid{
+    color: #FF9191;
+}
+
 @media (min-width: 768px){
     .register-main{
         padding: 50px;

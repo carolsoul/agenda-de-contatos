@@ -17,15 +17,18 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const validatePassword = (pwd) => {
-    return (
-      pwd.length >= 8 &&
-      /[A-Z]/.test(pwd) &&
-      /[a-z]/.test(pwd) &&
-      /\d/.test(pwd) &&
-      /[\W_]/.test(pwd) // Pelo menos um caractere especial
-    );
-  };
+  const checkPasswordRules = (password) => ({
+    length: password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /\d/.test(password),
+    specialChar: /[\W_]/.test(password) // Pelo menos um caractere especial
+  });
+
+  const isPasswordValid = (password) => {
+    const rules = checkPasswordRules(password);
+    return Object.values(rules).every(Boolean);
+  }
 
   const validatePhone = (phone) => {
     return /^\+?[1-9]\d{1,14}$/.test(phone); // Formato global E.164
@@ -44,7 +47,7 @@ function Register() {
       return;
     }
 
-    if (!validatePassword(password)) {
+    if (!isPasswordValid(password)) {
       setMessage({
         text: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.",
         type: "error",
@@ -118,17 +121,25 @@ function Register() {
             <div className="group">
               <FaLock className="icon" />
               <input id="password" type={showPassword ? "text" : "password"} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
-              <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
             </div>
+
+            {password && (
+              <div className="password-rules">
+                {Object.entries(checkPasswordRules(password)).map(([rule, valid]) => (
+                  <p key={rule} className={valid ? "valid" : "invalid"}>
+                    {valid ? "✅" : "❌"} {rule === "length" ? "Mínimo de 8 caracteres" : 
+                      rule === "uppercase" ? "Uma letra maiúscula" : 
+                      rule === "lowercase" ? "Uma letra minúscula" :
+                      rule === "number" ? "Um número" : 
+                      "Um caractere especial"}
+                  </p>
+                ))}
+              </div>
+            )}
 
             <div className="group">
               <FaLock className="icon" />
               <input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Confirmar senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-              <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
             </div>
           </div>
 
